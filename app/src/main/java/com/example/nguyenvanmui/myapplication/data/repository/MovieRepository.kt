@@ -1,5 +1,6 @@
 package com.example.nguyenvanmui.myapplication.data.repository
 
+import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
 import com.example.nguyenvanmui.myapplication.data.remote.entity.MoviesResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.ReviewsResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.VideosResponse
@@ -16,4 +17,12 @@ interface MovieRepository {
     fun trailers(movieId: String): Observable<VideosResponse>
 
     fun reviews(movieId: String): Observable<ReviewsResponse>
+
+    fun setFavorite(movie: Movie)
+
+    fun isFavorite(id: String): Boolean
+
+    fun getFavorites(): List<Movie>
+
+    fun unFavorite(id: String)
 }
