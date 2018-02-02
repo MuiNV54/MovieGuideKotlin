@@ -5,6 +5,8 @@ import android.os.StrictMode
 import com.example.nguyenvanmui.myapplication.di.AppComponent
 import com.example.nguyenvanmui.myapplication.di.AppModule
 import com.example.nguyenvanmui.myapplication.di.DaggerAppComponent
+import com.example.nguyenvanmui.myapplication.di.detail.DetailComponent
+import com.example.nguyenvanmui.myapplication.di.detail.DetailModule
 import com.example.nguyenvanmui.myapplication.di.listing.ListingComponent
 import com.example.nguyenvanmui.myapplication.di.listing.ListingModule
 import com.example.nguyenvanmui.myapplication.di.network.NetworkModule
@@ -15,6 +17,7 @@ import com.example.nguyenvanmui.myapplication.di.network.NetworkModule
 class MainApplication : Application() {
     lateinit var appComponent: AppComponent
     lateinit var listingComponent: ListingComponent
+    lateinit var detailComponent: DetailComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -32,5 +35,10 @@ class MainApplication : Application() {
     fun createListingComponent(): ListingComponent {
         listingComponent = appComponent.plus(ListingModule())
         return listingComponent
+    }
+
+    fun createDetailComponent(): DetailComponent {
+        detailComponent = appComponent.plus(DetailModule())
+        return detailComponent
     }
 }

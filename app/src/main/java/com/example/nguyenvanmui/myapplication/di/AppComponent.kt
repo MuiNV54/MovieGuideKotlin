@@ -1,5 +1,7 @@
 package com.example.nguyenvanmui.myapplication.di
 
+import com.example.nguyenvanmui.myapplication.di.detail.DetailComponent
+import com.example.nguyenvanmui.myapplication.di.detail.DetailModule
 import com.example.nguyenvanmui.myapplication.di.favorite.FavoriteModule
 import com.example.nguyenvanmui.myapplication.di.listing.ListingComponent
 import com.example.nguyenvanmui.myapplication.di.listing.ListingModule
@@ -13,5 +15,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = arrayOf(AppModule::class, NetworkModule::class, FavoriteModule::class))
 interface AppComponent {
+    fun plus(detailModule: DetailModule): DetailComponent
+
     fun plus(listingModule: ListingModule): ListingComponent
 }

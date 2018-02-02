@@ -6,4 +6,4 @@ import com.google.gson.annotations.SerializedName
  * Created by nguyen.van.mui on 01/02/2018.
  */
 data class VideosResponse(@SerializedName("results")
-var movies: List<Video>? = null)
+var videos: List<Video>? = null)

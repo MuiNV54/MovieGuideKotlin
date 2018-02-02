@@ -6,6 +6,8 @@ import com.example.nguyenvanmui.myapplication.data.remote.entity.MoviesResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.ReviewsResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.VideosResponse
 import com.example.nguyenvanmui.myapplication.data.room.FavoritesStore
+import com.example.nguyenvanmui.myapplication.data.room.SortType
+import com.example.nguyenvanmui.myapplication.data.room.SortingOptionStore
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -15,7 +17,16 @@ import javax.inject.Inject
  * Created by nguyen.van.mui on 01/02/2018.
  */
 class MovieRepositoryImpl @Inject constructor(var webService: TmdbWebService,
-        var favoritesStore: FavoritesStore) : MovieRepository {
+        var favoritesStore: FavoritesStore,
+        var sortingOptionStore: SortingOptionStore) : MovieRepository {
+    override fun getSelectedSortingOption(): Int {
+        return sortingOptionStore.getSelectedOption()
+    }
+
+    override fun setSortingOption(sortType: SortType) {
+        sortingOptionStore.setSelectedOption(sortType)
+    }
+
     override fun setFavorite(movie: Movie) {
         favoritesStore.setFavorite(movie)
     }

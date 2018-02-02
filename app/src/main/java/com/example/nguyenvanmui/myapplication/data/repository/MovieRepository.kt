@@ -4,6 +4,7 @@ import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
 import com.example.nguyenvanmui.myapplication.data.remote.entity.MoviesResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.ReviewsResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.VideosResponse
+import com.example.nguyenvanmui.myapplication.data.room.SortType
 import io.reactivex.Observable
 
 /**
@@ -25,4 +26,8 @@ interface MovieRepository {
     fun getFavorites(): List<Movie>
 
     fun unFavorite(id: String)
+
+    fun getSelectedSortingOption(): Int
+
+    fun setSortingOption(sortType: SortType)
 }
