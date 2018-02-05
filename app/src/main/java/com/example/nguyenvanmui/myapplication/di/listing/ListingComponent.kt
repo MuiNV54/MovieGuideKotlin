@@ -1,7 +1,8 @@
 package com.example.nguyenvanmui.myapplication.di.listing
 
 import com.example.nguyenvanmui.myapplication.di.listing.sorting.SortingModule
-import com.example.nguyenvanmui.myapplication.view.MainActivity
+import com.example.nguyenvanmui.myapplication.view.listing.ListingFragment
+import com.example.nguyenvanmui.myapplication.view.listing.sorting.SortingDialogFragment
 import dagger.Subcomponent
 
 /**
@@ -9,5 +10,7 @@ import dagger.Subcomponent
  */
 @Subcomponent(modules = arrayOf(ListingModule::class, SortingModule::class))
 interface ListingComponent {
-    fun inject(mainActivity: MainActivity)
+    fun inject(listingFragment: ListingFragment)
+
+    fun inject(sortingDialogFragment: SortingDialogFragment)
 }

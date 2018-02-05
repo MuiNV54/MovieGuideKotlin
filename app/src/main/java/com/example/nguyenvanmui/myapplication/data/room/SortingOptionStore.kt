@@ -8,7 +8,7 @@ import javax.inject.Inject
  * Created by nguyen.van.mui on 02/02/2018.
  */
 class SortingOptionStore {
-    lateinit var pref: SharedPreferences
+    var pref: SharedPreferences
     private val SELECTED_OPTION = "selectedOption"
     private val PREF_NAME = "SortingOptionStore"
 

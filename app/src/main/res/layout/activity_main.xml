@@ -1,17 +1,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".listing.MoviesListingActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-    <include layout="@layout/toolbar"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/listing_toolbar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/AppTheme.Toolbar"/>
 
     <fragment
         android:id="@+id/fragment_listing"
-        android:name="com.esoxjem.movieguide.listing.MoviesListingFragment"
+        android:name="com.example.nguyenvanmui.myapplication.view.listing.ListingFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_movies"/>
-
+        tools:layout="@layout/fragment_movies"
+        />
 </LinearLayout>

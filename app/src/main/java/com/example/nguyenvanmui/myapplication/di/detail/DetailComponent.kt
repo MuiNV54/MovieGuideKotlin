@@ -1,6 +1,6 @@
 package com.example.nguyenvanmui.myapplication.di.detail
 
-import com.example.nguyenvanmui.myapplication.view.MainActivity
+import com.example.nguyenvanmui.myapplication.view.detail.DetailFragment
 import dagger.Subcomponent
 
 /**
@@ -9,5 +9,5 @@ import dagger.Subcomponent
 @DetailsScope
 @Subcomponent(modules = arrayOf(DetailModule::class))
 interface DetailComponent {
-//    fun inject(mainActivity: MainActivity)
+    fun inject(detailFragment: DetailFragment)
 }

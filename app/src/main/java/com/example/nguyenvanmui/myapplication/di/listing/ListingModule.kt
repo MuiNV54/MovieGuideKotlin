@@ -1,8 +1,9 @@
 package com.example.nguyenvanmui.myapplication.di.listing
 
-import com.example.nguyenvanmui.myapplication.di.AppModule
 import com.example.nguyenvanmui.myapplication.domain.MoviesListingInteractor
 import com.example.nguyenvanmui.myapplication.domain.MoviesListingInteractorImpl
+import com.example.nguyenvanmui.myapplication.view.listing.ListingPresenter
+import com.example.nguyenvanmui.myapplication.view.listing.ListingPresenterImpl
 import dagger.Module
 import dagger.Provides
 
@@ -12,8 +13,13 @@ import dagger.Provides
 @Module
 class ListingModule {
     @Provides
-    internal fun provideMovieListingInteractor(
+    fun provideMovieListingInteractor(
             moviesListingInteractorImpl: MoviesListingInteractorImpl): MoviesListingInteractor {
         return moviesListingInteractorImpl
+    }
+
+    @Provides
+    fun provideListingPresenter(listingPresenterImpl: ListingPresenterImpl): ListingPresenter {
+        return listingPresenterImpl
     }
 }

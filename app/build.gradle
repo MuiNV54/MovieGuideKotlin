@@ -18,6 +18,10 @@ def getProperty(String filename, String propName) {
   }
 }
 
+androidExtensions {
+  experimental = true
+}
+
 android {
   compileSdkVersion 27
   buildToolsVersion "27.0.1"
@@ -64,8 +68,10 @@ dependencies {
   compile "com.android.support:design:$supportVersion"
   compile "com.android.support:support-vector-drawable:$supportVersion"
   compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  implementation "com.android.support:palette-v7:${supportVersion}"
 
   implementation 'com.squareup.moshi:moshi:1.1.0'
+  implementation 'com.github.bumptech.glide:glide:4.2.0'
 
   String daggerVersion = '2.13'
   compile "com.google.dagger:dagger:$daggerVersion"

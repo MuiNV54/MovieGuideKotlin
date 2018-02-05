@@ -2,6 +2,8 @@ package com.example.nguyenvanmui.myapplication.di.listing.sorting
 
 import com.example.nguyenvanmui.myapplication.domain.SortingInteractor
 import com.example.nguyenvanmui.myapplication.domain.SortingInteractorImpl
+import com.example.nguyenvanmui.myapplication.view.listing.sorting.SortingPresenter
+import com.example.nguyenvanmui.myapplication.view.listing.sorting.SortingPresenterImpl
 import dagger.Module
 import dagger.Provides
 
@@ -14,5 +16,10 @@ class SortingModule {
     fun providesSortingDialogInteractor(
             sortingInteractorImpl: SortingInteractorImpl): SortingInteractor {
         return sortingInteractorImpl
+    }
+
+    @Provides
+    fun provideSortingPresenter(sortingPresenterImpl: SortingPresenterImpl): SortingPresenter {
+        return sortingPresenterImpl
     }
 }
