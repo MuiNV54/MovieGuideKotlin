@@ -6,10 +6,12 @@ import com.example.nguyenvanmui.myapplication.data.remote.entity.Video
 import com.example.nguyenvanmui.myapplication.domain.FavoritesInteractor
 import com.example.nguyenvanmui.myapplication.domain.MovieDetailInteractor
 import com.example.nguyenvanmui.myapplication.util.RxUtils
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+
 
 /**
  * Created by nguyen.van.mui on 02/02/2018.
@@ -40,6 +42,11 @@ class DetailPresenterImpl : DetailPresenter {
     override fun showDetails(movie: Movie) {
         if (isViewAttached()) {
             view.showDetails(movie)
+
+            Completable.fromAction {
+                favoritesInteractor.setFavorite(movie)
+            }.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
         }
     }
 
@@ -48,7 +55,7 @@ class DetailPresenterImpl : DetailPresenter {
     }
 
     override fun showTrailers(movie: Movie) {
-        trailersSubscription = movieDetailsInteractor.getTrailers(movie.id.toString())
+        trailersSubscription = movieDetailsInteractor.getTrailers(movie.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ this.onGetTrailersSuccess(it) }, { t -> onGetTrailersFailure() })
@@ -65,9 +72,7 @@ class DetailPresenterImpl : DetailPresenter {
     }
 
     override fun showReviews(movie: Movie) {
-        reviewSubscription = movieDetailsInteractor.getReviews(movie.id.toString()).subscribeOn(
-                Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        reviewSubscription = movieDetailsInteractor.getReviews(movie.id)
                 .subscribe({ this.onGetReviewsSuccess(it) }, { t -> onGetReviewsFailure() })
     }
 
@@ -82,26 +87,38 @@ class DetailPresenterImpl : DetailPresenter {
     }
 
     override fun showFavoriteButton(movie: Movie) {
-        val isFavorite = favoritesInteractor.isFavorite(movie.id.toString())
-        if (isViewAttached()) {
-            if (isFavorite) {
+        favoritesInteractor.isFavorite(movie.id).subscribe({
+            if (isViewAttached())
                 view.showFavorited()
-            } else {
+        }, {
+            it.printStackTrace()
+        }, {
+            if (isViewAttached())
                 view.showUnFavorited()
-            }
-        }
+        })
     }
 
     override fun onFavoriteClick(movie: Movie) {
-        if (isViewAttached()) {
-            val isFavorite = favoritesInteractor.isFavorite(movie.id.toString())
-            if (isFavorite) {
-                favoritesInteractor.unFavorite(movie.id.toString())
+        favoritesInteractor.isFavorite(movie.id).subscribe({
+            if (isViewAttached()) {
+                Completable.fromAction {
+                    favoritesInteractor.unFavorite(movie.id)
+                }.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { }
                 view.showUnFavorited()
-            } else {
-                favoritesInteractor.setFavorite(movie)
+            }
+        }, {
+            it.printStackTrace()
+        }, {
+            if (isViewAttached()) {
+                Completable.fromAction {
+                    favoritesInteractor.setFavorite(movie)
+                }.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { }
                 view.showFavorited()
             }
-        }
+        })
     }
 }

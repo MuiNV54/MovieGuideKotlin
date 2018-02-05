@@ -73,6 +73,8 @@ dependencies {
   implementation 'com.squareup.moshi:moshi:1.1.0'
   implementation 'com.github.bumptech.glide:glide:4.2.0'
 
+  debugCompile 'com.amitshekhar.android:debug-db:1.0.2'
+
   String daggerVersion = '2.13'
   compile "com.google.dagger:dagger:$daggerVersion"
   kapt "com.google.dagger:dagger-compiler:$daggerVersion"

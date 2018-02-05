@@ -23,7 +23,7 @@ import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Review
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Video
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import kotlinx.android.synthetic.main.review.*
+import kotlinx.android.synthetic.main.review.view.*
 import kotlinx.android.synthetic.main.trailers_and_reviews.*
 import kotlinx.android.synthetic.main.trailers_and_reviews.view.*
 import javax.inject.Inject
@@ -155,19 +155,21 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
         if (reviews.isEmpty()) {
             this.reviews.visibility = View.GONE
             this.reviews.visibility = View.GONE
+            this.reviews_label.visibility = View.GONE
         } else {
             this.reviews.visibility = View.VISIBLE
             this.reviews.visibility = View.VISIBLE
+            this.reviews_label.visibility = View.VISIBLE
 
             this.reviews.removeAllViews()
             val inflater = activity?.layoutInflater
             for (review in reviews) {
                 val reviewContainer = inflater?.inflate(R.layout.review, this.reviews,
                         false) as ViewGroup
-                this.review_author.setText(review.author)
-                this.review_content.setText(review.content)
-                review_content.setOnClickListener(this)
-                this.review.addView(reviewContainer)
+                reviewContainer.review_author.setText(review.author)
+                reviewContainer.review_content.setText(review.content)
+                reviewContainer.review_content.setOnClickListener(this)
+                this.reviews.addView(reviewContainer)
             }
         }
     }

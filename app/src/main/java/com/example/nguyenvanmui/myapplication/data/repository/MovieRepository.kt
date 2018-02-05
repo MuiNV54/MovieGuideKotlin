@@ -5,6 +5,9 @@ import com.example.nguyenvanmui.myapplication.data.remote.entity.MoviesResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.ReviewsResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.VideosResponse
 import com.example.nguyenvanmui.myapplication.data.room.SortType
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 
 /**
@@ -21,11 +24,11 @@ interface MovieRepository {
 
     fun setFavorite(movie: Movie)
 
-    fun isFavorite(id: String): Boolean
+    fun getFavorite(id: String): Maybe<Movie>
 
-    fun getFavorites(): List<Movie>
+    fun getRoomFavorites(): Flowable<List<Movie>>
 
-    fun unFavorite(id: String)
+    fun deleteFavorite(id: String)
 
     fun getSelectedSortingOption(): Int
 

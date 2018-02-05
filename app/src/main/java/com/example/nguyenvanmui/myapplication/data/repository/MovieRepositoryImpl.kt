@@ -5,9 +5,11 @@ import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
 import com.example.nguyenvanmui.myapplication.data.remote.entity.MoviesResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.ReviewsResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.VideosResponse
-import com.example.nguyenvanmui.myapplication.data.room.FavoritesStore
+import com.example.nguyenvanmui.myapplication.data.room.RoomFavoriteDataSource
 import com.example.nguyenvanmui.myapplication.data.room.SortType
 import com.example.nguyenvanmui.myapplication.data.room.SortingOptionStore
+import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -17,8 +19,24 @@ import javax.inject.Inject
  * Created by nguyen.van.mui on 01/02/2018.
  */
 class MovieRepositoryImpl @Inject constructor(var webService: TmdbWebService,
-        var favoritesStore: FavoritesStore,
-        var sortingOptionStore: SortingOptionStore) : MovieRepository {
+        var sortingOptionStore: SortingOptionStore,
+        var roomFavoriteDataSource: RoomFavoriteDataSource) : MovieRepository {
+    override fun deleteFavorite(id: String) {
+        roomFavoriteDataSource.favoriteDao().deleteFavorite(id)
+    }
+
+    override fun getFavorite(id: String): Maybe<Movie> {
+        return roomFavoriteDataSource.favoriteDao().getFavorite(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getRoomFavorites(): Flowable<List<Movie>> {
+        return roomFavoriteDataSource.favoriteDao().getAllFavorites()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun getSelectedSortingOption(): Int {
         return sortingOptionStore.getSelectedOption()
     }
@@ -28,19 +46,7 @@ class MovieRepositoryImpl @Inject constructor(var webService: TmdbWebService,
     }
 
     override fun setFavorite(movie: Movie) {
-        favoritesStore.setFavorite(movie)
-    }
-
-    override fun isFavorite(id: String): Boolean {
-        return favoritesStore.isFavorite(id)
-    }
-
-    override fun getFavorites(): List<Movie> {
-        return favoritesStore.getFavorites()
-    }
-
-    override fun unFavorite(id: String) {
-        return favoritesStore.unfavorite(id)
+        return roomFavoriteDataSource.favoriteDao().insert(movie)
     }
 
     override fun popularMovies(): Observable<MoviesResponse> {

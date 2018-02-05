@@ -1,4 +1,4 @@
-package com.example.nguyenvanmui.myapplication.di.network
+package com.example.nguyenvanmui.myapplication.di.data
 
 import com.example.nguyenvanmui.myapplication.BuildConfig
 import okhttp3.Interceptor

@@ -5,11 +5,12 @@ import android.os.StrictMode
 import com.example.nguyenvanmui.myapplication.di.AppComponent
 import com.example.nguyenvanmui.myapplication.di.AppModule
 import com.example.nguyenvanmui.myapplication.di.DaggerAppComponent
+import com.example.nguyenvanmui.myapplication.di.data.NetworkModule
+import com.example.nguyenvanmui.myapplication.di.data.RoomModule
 import com.example.nguyenvanmui.myapplication.di.detail.DetailComponent
 import com.example.nguyenvanmui.myapplication.di.detail.DetailModule
 import com.example.nguyenvanmui.myapplication.di.listing.ListingComponent
 import com.example.nguyenvanmui.myapplication.di.listing.ListingModule
-import com.example.nguyenvanmui.myapplication.di.network.NetworkModule
 
 /**
  * Created by nguyen.van.mui on 01/02/2018.
@@ -29,6 +30,7 @@ class MainApplication : Application() {
         return DaggerAppComponent.builder()
                 .appModule(AppModule(this@MainApplication))
                 .networkModule(NetworkModule())
+                .roomModule(RoomModule())
                 .build()
     }
 

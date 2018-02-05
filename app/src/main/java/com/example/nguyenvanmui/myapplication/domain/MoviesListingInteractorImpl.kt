@@ -20,7 +20,7 @@ class MoviesListingInteractorImpl @Inject constructor(
                 return movieRepository.highestRatedMovies()
                         .map { it.movies }
             else ->
-                return Observable.just(movieRepository.getFavorites())
+                return movieRepository.getRoomFavorites().toObservable()
         }
     }
 }

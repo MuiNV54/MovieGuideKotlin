@@ -11,7 +11,7 @@ import javax.inject.Inject
  */
 class ListingPresenterImpl : ListingPresenter {
     lateinit var view: ListingView
-    lateinit var moviesInteractor: MoviesListingInteractor
+    var moviesInteractor: MoviesListingInteractor
     private var fetchSubscription: Disposable? = null
 
     @Inject constructor(interactor: MoviesListingInteractor) {
