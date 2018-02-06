@@ -9,16 +9,17 @@ import com.example.nguyenvanmui.myapplication.di.data.NetworkModule
 import com.example.nguyenvanmui.myapplication.di.data.RoomModule
 import com.example.nguyenvanmui.myapplication.di.detail.DetailComponent
 import com.example.nguyenvanmui.myapplication.di.detail.DetailModule
-import com.example.nguyenvanmui.myapplication.di.listing.ListingComponent
-import com.example.nguyenvanmui.myapplication.di.listing.ListingModule
 
 /**
  * Created by nguyen.van.mui on 01/02/2018.
  */
 class MainApplication : Application() {
-    lateinit var appComponent: AppComponent
-    lateinit var listingComponent: ListingComponent
-    lateinit var detailComponent: DetailComponent
+
+    companion object {
+        lateinit var appComponent: AppComponent
+    }
+
+    var detailComponent: DetailComponent? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -34,13 +35,10 @@ class MainApplication : Application() {
                 .build()
     }
 
-    fun createListingComponent(): ListingComponent {
-        listingComponent = appComponent.plus(ListingModule())
-        return listingComponent
-    }
-
     fun createDetailComponent(): DetailComponent {
-        detailComponent = appComponent.plus(DetailModule())
-        return detailComponent
+        if (detailComponent == null) {
+            detailComponent = appComponent.plus(DetailModule())
+        }
+        return detailComponent as DetailComponent
     }
 }

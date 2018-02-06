@@ -8,7 +8,6 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.example.nguyenvanmui.myapplication.MainApplication
 import com.example.nguyenvanmui.myapplication.R
-import com.example.nguyenvanmui.myapplication.view.listing.ListingPresenter
 import javax.inject.Inject
 
 /**
@@ -24,10 +23,10 @@ class SortingDialogFragment : DialogFragment(), SortingDialogView, RadioGroup.On
     lateinit var favorites: RadioButton
 
     companion object {
-        lateinit var moviesListingPresenter: ListingPresenter
+        lateinit var optionChangeCallback: OptionChangeCallback
 
-        fun newInstance(moviesListingPresenter: ListingPresenter): SortingDialogFragment {
-            this.moviesListingPresenter = moviesListingPresenter
+        fun newInstance(optionChangeCallback: OptionChangeCallback): SortingDialogFragment {
+            this.optionChangeCallback = optionChangeCallback
             return SortingDialogFragment()
         }
     }
@@ -35,7 +34,7 @@ class SortingDialogFragment : DialogFragment(), SortingDialogView, RadioGroup.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setRetainInstance(true)
-        (activity?.getApplication() as MainApplication).createListingComponent().inject(this)
+        MainApplication.appComponent.inject(this)
         sortingDialogPresenter.setViewPresenter(this)
     }
 
@@ -81,17 +80,17 @@ class SortingDialogFragment : DialogFragment(), SortingDialogView, RadioGroup.On
         when (checkedId) {
             R.id.most_popular -> {
                 sortingDialogPresenter.onPopularMoviesSelected()
-                moviesListingPresenter.displayMovies()
+                optionChangeCallback.onOptionChange()
             }
 
             R.id.highest_rated -> {
                 sortingDialogPresenter.onHighestRatedMoviesSelected()
-                moviesListingPresenter.displayMovies()
+                optionChangeCallback.onOptionChange()
             }
 
             R.id.favorites -> {
                 sortingDialogPresenter.onFavoritesSelected()
-                moviesListingPresenter.displayMovies()
+                optionChangeCallback.onOptionChange()
             }
         }
     }
@@ -103,5 +102,9 @@ class SortingDialogFragment : DialogFragment(), SortingDialogView, RadioGroup.On
     override fun onDestroyView() {
         super.onDestroyView()
         sortingDialogPresenter.destroy()
+    }
+
+    interface OptionChangeCallback {
+        fun onOptionChange()
     }
 }

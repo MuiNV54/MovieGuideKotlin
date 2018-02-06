@@ -1,5 +1,7 @@
 package com.example.nguyenvanmui.myapplication.view.listing
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -14,6 +16,7 @@ import android.view.ViewGroup
 import com.example.nguyenvanmui.myapplication.MainApplication
 import com.example.nguyenvanmui.myapplication.R
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
+import com.example.nguyenvanmui.myapplication.domain.MoviesListingInteractorImpl
 import com.example.nguyenvanmui.myapplication.view.listing.sorting.SortingDialogFragment
 import kotlinx.android.synthetic.main.fragment_movies.*
 import java.util.*
@@ -24,8 +27,7 @@ import javax.inject.Inject
  */
 class ListingFragment : Fragment(), ListingView {
 
-    @Inject
-    lateinit var moviesPresenter: ListingPresenter
+    lateinit var listingViewModel: ListingViewModel
 
     private var adapter: RecyclerView.Adapter<*>? = null
     private val movies = ArrayList<Movie>(20)
@@ -40,7 +42,7 @@ class ListingFragment : Fragment(), ListingView {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         retainInstance = true
-        (activity?.application as MainApplication).createListingComponent().inject(this)
+        initViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +54,18 @@ class ListingFragment : Fragment(), ListingView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initLayoutReferences()
-        moviesPresenter.setViewPresenter(this)
+        getMoviesList()
+    }
+
+    private fun initViewModel() {
+        listingViewModel = ViewModelProviders.of(this).get(ListingViewModel::class.java)
+        listingViewModel?.let { lifecycle.addObserver(it) }
+    }
+
+    private fun getMoviesList() {
+        listingViewModel.loadMovies().observe(this, Observer { movies ->
+            showMovies(movies!!)
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -64,7 +77,11 @@ class ListingFragment : Fragment(), ListingView {
     }
 
     private fun displaySortingOptions() {
-        val sortingDialogFragment = SortingDialogFragment.newInstance(moviesPresenter)
+        val sortingDialogFragment = SortingDialogFragment.newInstance(object : SortingDialogFragment.OptionChangeCallback {
+            override fun onOptionChange() {
+                getMoviesList()
+            }
+        })
         sortingDialogFragment.show(fragmentManager, "Select Quantity")
     }
 
@@ -102,11 +119,6 @@ class ListingFragment : Fragment(), ListingView {
 
     override fun onMovieClicked(movie: Movie) {
         callback!!.onMovieClicked(movie)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        moviesPresenter.destroy()
     }
 
     override fun onDetach() {
