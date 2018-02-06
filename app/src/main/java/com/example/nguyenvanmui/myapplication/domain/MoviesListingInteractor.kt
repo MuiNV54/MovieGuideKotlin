@@ -12,7 +12,7 @@ import javax.inject.Inject
 /**
  * Created by nguyen.van.mui on 01/02/2018.
  */
-class MoviesListingInteractorImpl @Inject constructor(
+class MoviesListingInteractor @Inject constructor(
         var movieRepository: MovieRepository)  {
     val allCompositeDisposable: MutableList<Disposable> = arrayListOf()
 

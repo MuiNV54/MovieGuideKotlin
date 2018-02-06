@@ -1,21 +1,20 @@
 package com.example.nguyenvanmui.myapplication.view.listing.sorting
 
 import android.app.Dialog
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import com.example.nguyenvanmui.myapplication.MainApplication
 import com.example.nguyenvanmui.myapplication.R
-import javax.inject.Inject
+import com.example.nguyenvanmui.myapplication.data.room.SortType
 
 /**
  * Created by nguyen.van.mui on 05/02/2018.
  */
 class SortingDialogFragment : DialogFragment(), SortingDialogView, RadioGroup.OnCheckedChangeListener {
-    @Inject
-    lateinit var sortingDialogPresenter: SortingPresenter
+    lateinit var sortingViewModel: SortingViewModel
 
     lateinit var sortingGroup: RadioGroup
     lateinit var mostPopular: RadioButton
@@ -34,8 +33,7 @@ class SortingDialogFragment : DialogFragment(), SortingDialogView, RadioGroup.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setRetainInstance(true)
-        MainApplication.appComponent.inject(this)
-        sortingDialogPresenter.setViewPresenter(this)
+        initViewModel()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -59,8 +57,20 @@ class SortingDialogFragment : DialogFragment(), SortingDialogView, RadioGroup.On
         initViews()
     }
 
+    private fun initViewModel() {
+        sortingViewModel = ViewModelProviders.of(this).get(SortingViewModel::class.java)
+        sortingViewModel.let { lifecycle.addObserver(it) }
+    }
+
     private fun initViews() {
-        sortingDialogPresenter.setLastSavedOption()
+        when (sortingViewModel.setLastSavedOption()) {
+            SortType.MOST_POPULAR.value ->
+                setPopularChecked()
+            SortType.HIGHEST_RATED.value ->
+                setHighestRatedChecked()
+            else ->
+                setFavoritesChecked()
+        }
         sortingGroup.setOnCheckedChangeListener(this)
     }
 
@@ -79,29 +89,27 @@ class SortingDialogFragment : DialogFragment(), SortingDialogView, RadioGroup.On
     override fun onCheckedChanged(radioGroup: RadioGroup, checkedId: Int) {
         when (checkedId) {
             R.id.most_popular -> {
-                sortingDialogPresenter.onPopularMoviesSelected()
+                sortingViewModel.onPopularMoviesSelected()
                 optionChangeCallback.onOptionChange()
+                dismissDialog()
             }
 
             R.id.highest_rated -> {
-                sortingDialogPresenter.onHighestRatedMoviesSelected()
+                sortingViewModel.onHighestRatedMoviesSelected()
                 optionChangeCallback.onOptionChange()
+                dismissDialog()
             }
 
             R.id.favorites -> {
-                sortingDialogPresenter.onFavoritesSelected()
+                sortingViewModel.onFavoritesSelected()
                 optionChangeCallback.onOptionChange()
+                dismissDialog()
             }
         }
     }
 
     override fun dismissDialog() {
         dismiss()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        sortingDialogPresenter.destroy()
     }
 
     interface OptionChangeCallback {

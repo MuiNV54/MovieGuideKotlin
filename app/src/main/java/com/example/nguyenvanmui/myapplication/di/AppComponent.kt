@@ -5,9 +5,8 @@ import com.example.nguyenvanmui.myapplication.di.data.RoomModule
 import com.example.nguyenvanmui.myapplication.di.detail.DetailComponent
 import com.example.nguyenvanmui.myapplication.di.detail.DetailModule
 import com.example.nguyenvanmui.myapplication.di.favorite.FavoriteModule
-import com.example.nguyenvanmui.myapplication.di.listing.sorting.SortingModule
 import com.example.nguyenvanmui.myapplication.view.listing.ListingViewModel
-import com.example.nguyenvanmui.myapplication.view.listing.sorting.SortingDialogFragment
+import com.example.nguyenvanmui.myapplication.view.listing.sorting.SortingViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -16,11 +15,11 @@ import javax.inject.Singleton
  */
 @Singleton
 @Component(modules = arrayOf(AppModule::class, NetworkModule::class, FavoriteModule::class,
-        RoomModule::class, SortingModule::class))
+        RoomModule::class))
 interface AppComponent {
     fun plus(detailModule: DetailModule): DetailComponent
 
     fun inject(listingViewModel: ListingViewModel)
 
-    fun inject(sortingDialogFragment: SortingDialogFragment)
+    fun inject(sortingViewModel: SortingViewModel)
 }

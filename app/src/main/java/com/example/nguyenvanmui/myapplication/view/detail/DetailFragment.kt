@@ -72,12 +72,10 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         if (arguments != null) {
             val movie = arguments?.get(Constants.MOVIE) as Movie
-            if (movie != null) {
-                this.movie = movie
-                movieDetailsPresenter.setViewPresenter(this)
-                movieDetailsPresenter.showDetails(movie)
-                movieDetailsPresenter.showFavoriteButton(movie)
-            }
+            this.movie = movie
+            movieDetailsPresenter.setViewPresenter(this)
+            movieDetailsPresenter.showDetails(movie)
+            movieDetailsPresenter.showFavoriteButton(movie)
         }
 
         favorite.setOnClickListener(this)

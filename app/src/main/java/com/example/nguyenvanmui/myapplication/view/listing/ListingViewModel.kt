@@ -3,7 +3,7 @@ package com.example.nguyenvanmui.myapplication.view.listing
 import android.arch.lifecycle.*
 import com.example.nguyenvanmui.myapplication.MainApplication
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
-import com.example.nguyenvanmui.myapplication.domain.MoviesListingInteractorImpl
+import com.example.nguyenvanmui.myapplication.domain.MoviesListingInteractor
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class ListingViewModel : ViewModel(), LifecycleObserver {
     private val compositeDisposable = CompositeDisposable()
 
     @Inject
-    lateinit var moviesInteractor: MoviesListingInteractorImpl
+    lateinit var moviesInteractor: MoviesListingInteractor
 
     init {
         MainApplication.appComponent.inject(this)

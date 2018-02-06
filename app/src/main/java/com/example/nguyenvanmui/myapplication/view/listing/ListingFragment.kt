@@ -13,14 +13,11 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.example.nguyenvanmui.myapplication.MainApplication
 import com.example.nguyenvanmui.myapplication.R
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
-import com.example.nguyenvanmui.myapplication.domain.MoviesListingInteractorImpl
 import com.example.nguyenvanmui.myapplication.view.listing.sorting.SortingDialogFragment
 import kotlinx.android.synthetic.main.fragment_movies.*
 import java.util.*
-import javax.inject.Inject
 
 /**
  * Created by nguyen.van.mui on 02/02/2018.
@@ -59,7 +56,7 @@ class ListingFragment : Fragment(), ListingView {
 
     private fun initViewModel() {
         listingViewModel = ViewModelProviders.of(this).get(ListingViewModel::class.java)
-        listingViewModel?.let { lifecycle.addObserver(it) }
+        listingViewModel.let { lifecycle.addObserver(it) }
     }
 
     private fun getMoviesList() {
