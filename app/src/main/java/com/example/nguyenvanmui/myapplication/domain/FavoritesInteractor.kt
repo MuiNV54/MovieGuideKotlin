@@ -1,19 +1,28 @@
 package com.example.nguyenvanmui.myapplication.domain
 
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
-import io.reactivex.Flowable
+import com.example.nguyenvanmui.myapplication.data.repository.MovieRepository
 import io.reactivex.Maybe
-import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import javax.inject.Inject
 
 /**
  * Created by nguyen.van.mui on 02/02/2018.
  */
-interface FavoritesInteractor {
-    fun setFavorite(movie: Movie)
+class FavoritesInteractor @Inject constructor(
+        var movieRepository: MovieRepository) {
+    val allCompositeDisposable: MutableList<Disposable> = arrayListOf()
 
-    fun isFavorite(id: String): Maybe<Movie>
+    fun setFavorite(movie: Movie) {
+        allCompositeDisposable.add(movieRepository.setFavorite(movie)
+                .subscribe({}))
+    }
 
-    fun getFavorites(): Flowable<List<Movie>>
+    fun isFavorite(id: String): Maybe<Movie> {
+        return movieRepository.getFavorite(id)
+    }
 
-    fun unFavorite(id: String)
+    fun unFavorite(id: String) {
+        allCompositeDisposable.add(movieRepository.deleteFavorite(id).subscribe({}))
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.nguyenvanmui.myapplication.view.detail
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,7 +18,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.nguyenvanmui.myapplication.Constants
 import com.example.nguyenvanmui.myapplication.Constants.SITE_YOUTUBE
 import com.example.nguyenvanmui.myapplication.Constants.YOUTUBE_THUMBNAIL_URL
-import com.example.nguyenvanmui.myapplication.MainApplication
 import com.example.nguyenvanmui.myapplication.R
 import com.example.nguyenvanmui.myapplication.R.id.video_thumb
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
@@ -26,20 +27,14 @@ import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.review.view.*
 import kotlinx.android.synthetic.main.trailers_and_reviews.*
 import kotlinx.android.synthetic.main.trailers_and_reviews.view.*
-import javax.inject.Inject
 
 /**
  * Created by nguyen.van.mui on 02/02/2018.
  */
 class DetailFragment : Fragment(), DetailView, View.OnClickListener {
-    @Inject
-    lateinit var movieDetailsPresenter: DetailPresenter
+    lateinit var detailViewModel: DetailViewModel
 
     private var movie: Movie? = null
-
-    fun DetailFragment() {
-        // Required empty public constructor
-    }
 
     companion object {
         fun getInstance(movie: Movie): DetailFragment {
@@ -54,7 +49,7 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        (activity?.application as MainApplication).createDetailComponent().inject(this)
+        initViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -73,12 +68,22 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
         if (arguments != null) {
             val movie = arguments?.get(Constants.MOVIE) as Movie
             this.movie = movie
-            movieDetailsPresenter.setViewPresenter(this)
-            movieDetailsPresenter.showDetails(movie)
-            movieDetailsPresenter.showFavoriteButton(movie)
+            showDetails(movie)
+            detailViewModel.showFavoriteButton(movie).observe(this, Observer { isFavorite ->
+                if (isFavorite!!) {
+                    showFavorited()
+                } else {
+                    showUnFavorited()
+                }
+            })
         }
 
         favorite.setOnClickListener(this)
+    }
+
+    private fun initViewModel() {
+        detailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+        detailViewModel?.let { lifecycle.addObserver(it) }
     }
 
     private fun setToolbar() {
@@ -110,8 +115,14 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
         movie_rating.text = String.format(getString(R.string.rating),
                 movie.voteAverage.toString())
         movie_description.setText(movie.overview)
-        movieDetailsPresenter.showTrailers(movie)
-        movieDetailsPresenter.showReviews(movie)
+        detailViewModel.showTrailers(movie)
+                .observe(this, Observer { videos ->
+                    showTrailers(videos!!)
+                })
+        detailViewModel.showReviews(movie)
+                .observe(this, Observer { movies ->
+                    showReviews(movies!!)
+                })
     }
 
     override fun showTrailers(trailers: List<Video>) {
@@ -212,7 +223,15 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
     }
 
     private fun onFavoriteClick() {
-        movie?.let { movieDetailsPresenter.onFavoriteClick(it) }
+        movie?.let {
+            detailViewModel.onFavoriteClick(it).observe(this, Observer { isFavorite ->
+                if (isFavorite!!) {
+                    showFavorited()
+                } else {
+                    showUnFavorited()
+                }
+            })
+        }
     }
 
     fun Video.getUrl(): String {
@@ -229,10 +248,5 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
         } else {
             Constants.EMPTY
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        movieDetailsPresenter.destroy()
     }
 }

@@ -22,13 +22,13 @@ interface MovieRepository {
 
     fun reviews(movieId: String): Observable<ReviewsResponse>
 
-    fun setFavorite(movie: Movie)
+    fun setFavorite(movie: Movie): Completable
 
     fun getFavorite(id: String): Maybe<Movie>
 
     fun getRoomFavorites(): Flowable<List<Movie>>
 
-    fun deleteFavorite(id: String)
+    fun deleteFavorite(id: String): Completable
 
     fun getSelectedSortingOption(): Int
 
