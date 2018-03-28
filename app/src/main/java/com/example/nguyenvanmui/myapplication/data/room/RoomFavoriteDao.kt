@@ -20,7 +20,7 @@ interface RoomFavoriteDao {
     fun insert(@NotNull movie: Movie)
 
     @Query(RoomContract.SELECT_FAVORITES)
-    fun getAllFavorites(): Flowable<List<Movie>>
+    fun getAllFavorites(): Maybe<List<Movie>>
 
     @Query(RoomContract.SELECT_FAVORITES + " WHERE id = :id LIMIT 1")
     fun getFavorite(id: String): Maybe<Movie>

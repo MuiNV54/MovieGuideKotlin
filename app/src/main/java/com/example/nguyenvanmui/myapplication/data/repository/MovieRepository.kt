@@ -6,7 +6,6 @@ import com.example.nguyenvanmui.myapplication.data.remote.entity.ReviewsResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.VideosResponse
 import com.example.nguyenvanmui.myapplication.data.room.SortType
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 
@@ -26,7 +25,7 @@ interface MovieRepository {
 
     fun getFavorite(id: String): Maybe<Movie>
 
-    fun getRoomFavorites(): Flowable<List<Movie>>
+    fun getRoomFavorites(): Maybe<List<Movie>>
 
     fun deleteFavorite(id: String): Completable
 

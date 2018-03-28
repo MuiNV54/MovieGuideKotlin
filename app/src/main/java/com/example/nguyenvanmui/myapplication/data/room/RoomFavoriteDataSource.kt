@@ -17,6 +17,13 @@ abstract class RoomFavoriteDataSource : RoomDatabase() {
     abstract fun favoriteDao(): RoomFavoriteDao
 
     companion object {
+        @Volatile private var INSTANCE: RoomFavoriteDataSource? = null
+
+        fun getInstance(context: Context): RoomFavoriteDataSource =
+                INSTANCE ?: synchronized(this) {
+                    INSTANCE ?: buildPersistentFavorite(context).also { INSTANCE = it }
+                }
+
         fun buildPersistentFavorite(
                 context: Context): RoomFavoriteDataSource = Room.databaseBuilder(
                 context.applicationContext, RoomFavoriteDataSource::class.java,

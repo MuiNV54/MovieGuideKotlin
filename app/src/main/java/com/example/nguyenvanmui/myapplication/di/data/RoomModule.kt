@@ -14,5 +14,5 @@ class RoomModule {
     @Provides
     @Singleton
     fun provideRoomFavoriteDataSource(
-            context: Context) = RoomFavoriteDataSource.buildPersistentFavorite(context)
+            context: Context) = RoomFavoriteDataSource.getInstance(context)
 }

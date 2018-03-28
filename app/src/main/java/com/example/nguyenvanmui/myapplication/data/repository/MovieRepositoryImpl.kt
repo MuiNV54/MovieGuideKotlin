@@ -9,7 +9,6 @@ import com.example.nguyenvanmui.myapplication.data.room.RoomFavoriteDataSource
 import com.example.nguyenvanmui.myapplication.data.room.SortType
 import com.example.nguyenvanmui.myapplication.data.room.SortingOptionStore
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +34,7 @@ class MovieRepositoryImpl @Inject constructor(var webService: TmdbWebService,
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getRoomFavorites(): Flowable<List<Movie>> {
+    override fun getRoomFavorites(): Maybe<List<Movie>> {
         return roomFavoriteDataSource.favoriteDao().getAllFavorites()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
