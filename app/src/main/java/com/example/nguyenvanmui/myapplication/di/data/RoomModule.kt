@@ -15,4 +15,8 @@ class RoomModule {
     @Singleton
     fun provideRoomFavoriteDataSource(
             context: Context) = RoomFavoriteDataSource.getInstance(context)
+
+    @Provides
+    @Singleton
+    fun provideRoomFavoriteDao(roomFavoriteDataSource: RoomFavoriteDataSource) = roomFavoriteDataSource.favoriteDao()
 }

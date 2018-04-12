@@ -5,7 +5,7 @@ import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
 import com.example.nguyenvanmui.myapplication.data.remote.entity.MoviesResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.ReviewsResponse
 import com.example.nguyenvanmui.myapplication.data.remote.entity.VideosResponse
-import com.example.nguyenvanmui.myapplication.data.room.RoomFavoriteDataSource
+import com.example.nguyenvanmui.myapplication.data.room.RoomFavoriteDao
 import com.example.nguyenvanmui.myapplication.data.room.SortType
 import com.example.nguyenvanmui.myapplication.data.room.SortingOptionStore
 import io.reactivex.Completable
@@ -20,22 +20,22 @@ import javax.inject.Inject
  */
 class MovieRepositoryImpl @Inject constructor(var webService: TmdbWebService,
         var sortingOptionStore: SortingOptionStore,
-        var roomFavoriteDataSource: RoomFavoriteDataSource) : MovieRepository {
+        var roomFavoriteDao: RoomFavoriteDao) : MovieRepository {
     override fun deleteFavorite(id: String): Completable {
         return Completable.fromAction {
-            roomFavoriteDataSource.favoriteDao().deleteFavorite(id)
+            roomFavoriteDao.deleteFavorite(id)
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getFavorite(id: String): Maybe<Movie> {
-        return roomFavoriteDataSource.favoriteDao().getFavorite(id)
+        return roomFavoriteDao.getFavorite(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getRoomFavorites(): Maybe<List<Movie>> {
-        return roomFavoriteDataSource.favoriteDao().getAllFavorites()
+        return roomFavoriteDao.getAllFavorites()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
@@ -50,7 +50,7 @@ class MovieRepositoryImpl @Inject constructor(var webService: TmdbWebService,
 
     override fun setFavorite(movie: Movie): Completable {
         return Completable.fromAction {
-            roomFavoriteDataSource.favoriteDao().insert(movie)
+            roomFavoriteDao.insert(movie)
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

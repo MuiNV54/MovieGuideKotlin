@@ -2,11 +2,13 @@ package com.example.nguyenvanmui.myapplication.data.room
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.nguyenvanmui.myapplication.TestOpen
 import javax.inject.Inject
 
 /**
  * Created by nguyen.van.mui on 02/02/2018.
  */
+@TestOpen
 class SortingOptionStore {
     var pref: SharedPreferences
     private val SELECTED_OPTION = "selectedOption"
