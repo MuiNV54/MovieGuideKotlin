@@ -2,6 +2,7 @@ package com.example.nguyenvanmui.myapplication.domain
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.example.nguyenvanmui.myapplication.TestOpen
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Review
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Video
 import com.example.nguyenvanmui.myapplication.data.repository.MovieRepository
@@ -11,6 +12,7 @@ import javax.inject.Inject
 /**
  * Created by nguyen.van.mui on 02/02/2018.
  */
+@TestOpen
 class MovieDetailInteractor @Inject constructor(
         var movieRepository: MovieRepository) {
 

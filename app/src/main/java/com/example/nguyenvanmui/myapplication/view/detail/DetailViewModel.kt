@@ -14,18 +14,10 @@ import javax.inject.Inject
 /**
  * Created by nguyen.van.mui on 02/02/2018.
  */
-class DetailViewModel : ViewModel(), LifecycleObserver {
-
-    @Inject
-    lateinit var movieDetailsInteractor: MovieDetailInteractor
-    @Inject
-    lateinit var favoritesInteractor: FavoritesInteractor
+class DetailViewModel @Inject constructor(var movieDetailsInteractor: MovieDetailInteractor,
+        var favoritesInteractor: FavoritesInteractor) : ViewModel(), LifecycleObserver {
 
     private val compositeDisposable = CompositeDisposable()
-
-    init {
-        MainApplication.appComponent.inject(this)
-    }
 
     fun showTrailers(movie: Movie): LiveData<List<Video>> {
         return movieDetailsInteractor.getTrailers(movie.id)
@@ -40,7 +32,6 @@ class DetailViewModel : ViewModel(), LifecycleObserver {
         favoritesInteractor.isFavorite(movie.id).subscribe({
             isFavorite.value = true
         }, {
-            it.printStackTrace()
             isFavorite.value = false
         }, {
             isFavorite.value = false

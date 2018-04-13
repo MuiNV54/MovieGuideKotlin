@@ -1,5 +1,6 @@
 package com.example.nguyenvanmui.myapplication.domain
 
+import com.example.nguyenvanmui.myapplication.TestOpen
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
 import com.example.nguyenvanmui.myapplication.data.repository.MovieRepository
 import io.reactivex.Maybe
@@ -9,6 +10,7 @@ import javax.inject.Inject
 /**
  * Created by nguyen.van.mui on 02/02/2018.
  */
+@TestOpen
 class FavoritesInteractor @Inject constructor(
         var movieRepository: MovieRepository) {
     val allCompositeDisposable: MutableList<Disposable> = arrayListOf()

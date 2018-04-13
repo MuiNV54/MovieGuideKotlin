@@ -1,6 +1,7 @@
 package com.example.nguyenvanmui.myapplication.view.detail
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
@@ -18,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.nguyenvanmui.myapplication.Constants
 import com.example.nguyenvanmui.myapplication.Constants.SITE_YOUTUBE
 import com.example.nguyenvanmui.myapplication.Constants.YOUTUBE_THUMBNAIL_URL
+import com.example.nguyenvanmui.myapplication.MainApplication
 import com.example.nguyenvanmui.myapplication.R
 import com.example.nguyenvanmui.myapplication.R.id.video_thumb
 import com.example.nguyenvanmui.myapplication.data.remote.entity.Movie
@@ -27,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.review.view.*
 import kotlinx.android.synthetic.main.trailers_and_reviews.*
 import kotlinx.android.synthetic.main.trailers_and_reviews.view.*
+import javax.inject.Inject
 
 /**
  * Created by nguyen.van.mui on 02/02/2018.
@@ -35,6 +38,9 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
     lateinit var detailViewModel: DetailViewModel
 
     private var movie: Movie? = null
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
         fun getInstance(movie: Movie): DetailFragment {
@@ -48,6 +54,7 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MainApplication.appComponent.inject(this)
         retainInstance = true
         initViewModel()
     }
@@ -82,7 +89,7 @@ class DetailFragment : Fragment(), DetailView, View.OnClickListener {
     }
 
     private fun initViewModel() {
-        detailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+        detailViewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailViewModel::class.java)
         detailViewModel?.let { lifecycle.addObserver(it) }
     }
 
