@@ -88,6 +88,8 @@ dependencies {
   testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
   testImplementation "org.mockito:mockito-core:2.10.0"
 
+  testImplementation "com.squareup.okhttp3:mockwebserver:3.8.1"
+
   // Android Testing Support Library's runner and rules
   androidTestCompile "com.android.support.test:runner:1.0.1"
   androidTestCompile "com.android.support.test:rules:1.0.1"
